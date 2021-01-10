@@ -57,24 +57,27 @@ class Robot(object):
         elif self.__direction == [-1, 0]:
             self.__sprite = self.__SPRITE_UP
 
+    def __check_ahead(self, chars_to_check_for)
+        ahead_coordinates = self.__vector_addition(self.__pos, self.__direction)
+
+        if self.__MAP[ahead_coordinates[0]][ahead_coordinates[1]] in chars_to_check_for:
+            return True
+        return False
 
     def is_wall_ahead(self):
         '''Returns true if there is a wall in front of the robot'''
 
-        ahead_coordinates = self.__vector_addition(self.__pos, self.__direction)
-
-        if self.__MAP[ahead_coordinates[0]][ahead_coordinates[1]] == "#":
-            return True
-        return False
+        return self.__check_ahead(["#"])
 
     def is_truffle_ahead(self):
         '''Returns true if there is a truffle in front of the robot'''
-        ahead_coordinates = self.__vector_addition(self.__pos, self.__direction)
 
-        if self.__MAP[ahead_coordinates[0]][ahead_coordinates[1]] == self.__TRUFFLE_SPRITE:
-            return True
-        return False
+        return self.__check_ahead([self.__TRUFFLE_SPRITE])
 
+    def is_ghost_ahead(self):
+        '''Returns true if there is a ghost in front of the robot '''
+        
+        return self.__check_ahead(self.__GHOST_LETTERS)
 
     def move_forward(self):
         '''Moves the robot one unit forward'''
