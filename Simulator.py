@@ -57,7 +57,7 @@ class Robot(object):
         elif self.__direction == [-1, 0]:
             self.__sprite = self.__SPRITE_UP
 
-    def __check_ahead(self, chars_to_check_for)
+    def __check_ahead(self, chars_to_check_for):
         ahead_coordinates = self.__vector_addition(self.__pos, self.__direction)
 
         if self.__MAP[ahead_coordinates[0]][ahead_coordinates[1]] in chars_to_check_for:
