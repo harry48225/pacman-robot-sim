@@ -31,6 +31,11 @@ class Robot(object):
 
         self.__holding_truffle = False
 
+    def __turn_vector_left(self, vec):
+        return [-vec[1], vec[0]]
+
+    def __turn_vector_right(self, vec):
+        return [vec[1], -vec[0]]
 
     def __vector_addition(self, vec1, vec2):
         return [vec1[i] + vec2[i] for i in range(2)]
@@ -58,11 +63,40 @@ class Robot(object):
             self.__sprite = self.__SPRITE_UP
 
     def __check_ahead(self, chars_to_check_for):
+        ''' Checks infront of the robot for specific characters '''
         ahead_coordinates = self.__vector_addition(self.__pos, self.__direction)
+
+        return self.__check_in_direction(chars_to_check_for, ahead_coordinates)
+
+    def __check_left(self, chars_to_check_for):
+        ''' Checks to the left of the robot for specific characters '''
+        left_coordinates = self.__vector_addition(self.__pos, self.__turn_vector_left(self.__direction))
+
+        return self.__check_in_direction(chars_to_check_for, left_coordinates)
+
+    def __check_right(self, chars_to_check_for):
+        ''' Checks to the left of the robot for specific characters '''
+        right_coordinates = self.__vector_addition(self.__pos, self.__turn_vector_right(self.__direction))
+
+        return self.__check_in_direction(chars_to_check_for, right_coordinates)
+
+    def __check_in_direction(self, chars_to_check_for, direction):
+
+        direction_coordinates = self.__vector_addition(self.__pos, direction)
 
         if self.__MAP[ahead_coordinates[0]][ahead_coordinates[1]] in chars_to_check_for:
             return True
         return False
+
+    def is_wall_right(self):
+        '''Returns true if there is a wall to the left of the robot'''
+
+        return self.__check_right(["#"])
+
+    def is_wall_left(self):
+        '''Returns true if there is a wall to the left of the robot'''
+
+        return self.__check_left(["#"])
 
     def is_wall_ahead(self):
         '''Returns true if there is a wall in front of the robot'''
@@ -91,13 +125,13 @@ class Robot(object):
 
     def turn_left(self):
         '''Rotates the robot left by 90 degrees'''
-        self.__direction = [-self.__direction[1], self.__direction[0]]
+        self.__direction = self.__turn_vector_left(self.__direction)
         
         self.__update_sprite()
 
     def turn_right(self):
         '''Rotates the robot right by 90 degrees'''
-        self.__direction = [self.__direction[1], -self.__direction[0]]
+        self.__direction = self.__turn_vector_right(self.__direction)
 
         self.__update_sprite()
 
